@@ -3,8 +3,10 @@ use Mix.Config
 # Configure your database
 config :explorer, Explorer.Repo,
   adapter: Ecto.Adapters.Postgres,
-  database: "explorer_dev",
-  hostname: "localhost",
+  database: "ether",
+  hostname: "eth-test-db.coeopcqxhbsp.us-east-1.rds.amazonaws.com",
+  username: "poa",
+  password: "qwerty12345",
   pool_size: 20,
   pool_timeout: 60_000,
   timeout: 80_000

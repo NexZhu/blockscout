@@ -169,6 +169,10 @@ defmodule Explorer.Chain.TokenTransfer do
     |> where([_transaction, tt], tt.to_address_hash == ^address_hash or tt.from_address_hash == ^address_hash)
   end
 
+  def or_where_address_fields_match(query, address_hash, address_field) do
+    or_where(query, [t], field(t, ^address_field) == ^address_hash)
+  end
+
   @doc """
   A token ERC-721 is considered unique because it corresponds to the possession
   of a specific asset.
