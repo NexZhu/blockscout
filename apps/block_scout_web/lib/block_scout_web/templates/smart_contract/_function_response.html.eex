@@ -10,7 +10,7 @@
               <%= if named_argument?(item) do %>
                 <%= item["name"] %>
               <% end %>
-              (<%= item["type"] %>) : <%= values(item["value"]) %>
+              (<%= item["type"] %>) : <%= values(item["value"], item["type"]) %>
             </span>
           <% end %>
         ]
