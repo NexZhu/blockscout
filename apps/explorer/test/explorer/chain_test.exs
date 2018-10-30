@@ -230,11 +230,12 @@ defmodule Explorer.ChainTest do
         |> insert(to_address: address)
         |> with_block()
 
-      token_transfer = insert(
-        :token_transfer,
-        to_address: address,
-        transaction: transaction
-      )
+      token_transfer =
+        insert(
+          :token_transfer,
+          to_address: address,
+          transaction: transaction
+        )
 
       insert(
         :token_transfer,
@@ -259,21 +260,23 @@ defmodule Explorer.ChainTest do
     end
 
     test "returns just the token transfers related to the given contract address" do
-      contract_address = insert(
-        :address,
-        contract_code: Factory.data("contract_code")
-      )
+      contract_address =
+        insert(
+          :address,
+          contract_code: Factory.data("contract_code")
+        )
 
       transaction =
         :transaction
         |> insert(to_address: contract_address)
         |> with_block()
 
-      token_transfer = insert(
-        :token_transfer,
-        to_address: contract_address,
-        transaction: transaction
-      )
+      token_transfer =
+        insert(
+          :token_transfer,
+          to_address: contract_address,
+          transaction: transaction
+        )
 
       insert(
         :token_transfer,
@@ -327,7 +330,7 @@ defmodule Explorer.ChainTest do
       address = insert(:address)
 
       second_page_hashes =
-        50
+        2
         |> insert_list(:transaction, from_address: address)
         |> with_block()
         |> Enum.map(& &1.hash)
@@ -340,7 +343,10 @@ defmodule Explorer.ChainTest do
       assert second_page_hashes ==
                address
                |> Chain.address_to_transactions(
-                 paging_options: %PagingOptions{key: {block_number, index}, page_size: 50}
+                 paging_options: %PagingOptions{
+                   key: {block_number, index},
+                   page_size: 2
+                 }
                )
                |> Enum.map(& &1.hash)
                |> Enum.reverse()

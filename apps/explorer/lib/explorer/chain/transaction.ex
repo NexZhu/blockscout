@@ -3,7 +3,7 @@ defmodule Explorer.Chain.Transaction do
 
   use Explorer.Schema
 
-  import Ecto.Query, only: [from: 2, or_where: 3, preload: 3, subquery: 1, where: 3]
+  import Ecto.Query, only: [from: 2, preload: 3, subquery: 1, where: 3]
 
   alias Ecto.Changeset
 
@@ -427,8 +427,21 @@ defmodule Explorer.Chain.Transaction do
     where(query, [t], field(t, ^address_field) == ^address_hash)
   end
 
-  def or_where_address_fields_match(query, address_hash, address_field) do
-    or_where(query, [t], field(t, ^address_field) == ^address_hash)
+  def where_address_filters(query, address_hash, :to) do
+    where(query, [t], t.to_address_hash == ^address_hash or t.created_contract_address_hash == ^address_hash)
+  end
+
+  def where_address_filters(query, address_hash, :from) do
+    where(query, [t], t.from_address_hash == ^address_hash)
+  end
+
+  def where_address_filters(query, address_hash, _) do
+    where(
+      query,
+      [t],
+      t.to_address_hash == ^address_hash or t.from_address_hash == ^address_hash or
+        t.created_contract_address_hash == ^address_hash
+    )
   end
 
   @collated_fields ~w(block_number cumulative_gas_used gas_used index)a
